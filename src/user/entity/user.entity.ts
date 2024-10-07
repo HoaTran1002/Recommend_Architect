@@ -14,12 +14,12 @@ export class User{
     @Column()
     password: string
 
-    @Column()
+    @Column({default:''})
     role: string
 
     @Column()
     active: boolean
-    
+
     @Column()
     refresh_token: string
 }
