@@ -1,25 +1,37 @@
 import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class User{
+export class User {
     @PrimaryGeneratedColumn('uuid')
-    id: string
+    id: string;
+
+    @Column({ unique: true })
+    email: string;
+
+    @Column({ unique: true })
+    userName: string;
 
     @Column()
-    email: string
+    password: string;
 
-    @Column()
-    userName: string
+    @Column({ default: 'user' }) 
+    role: string;
 
-    @Column()
-    password: string
+    @Column({ nullable: true }) 
+    address: string;
 
-    @Column({default:''})
-    role: string
+    @Column({ nullable: true, type: 'int' })
+    age: number;
 
-    @Column()
-    active: boolean
+    @Column({ nullable: true })
+    numberPhone: string;
 
-    @Column()
-    refresh_token: string
+    @Column({ nullable: true }) 
+    gender: string;
+
+    @Column({ default: true })
+    active: boolean;
+
+    @Column({ nullable: true })
+    refresh_token: string;
 }

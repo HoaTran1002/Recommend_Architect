@@ -10,12 +10,14 @@ export class AuthController {
     
     @Post('signUp')
     async signUp(@Body() signUpDto: SignUpDto){
-        const response = await this.authServices.signUp()
+        const response = await this.authServices.signUp(signUpDto)
+
         return response
     }
     @Post('signIn')
     async signIn(@Body() signInDto: SignInDto){
-        const response = await this.authServices.signIn()
+        const response = await this.authServices.signIn(signInDto)
+        console.log(response)
         return response
     }
     @Post('refresh-token')

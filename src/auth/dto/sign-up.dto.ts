@@ -1,20 +1,33 @@
-import { IsString, MinLength, MaxLength, Matches } from "class-validator";
+import { IsString, MinLength, MaxLength, Matches, ValidateIf, IsNotEmpty, IsEmail, IsOptional, IsIn } from "class-validator";
 
 export class SignUpDto {
+
+    @IsEmail({}, { message: 'Email is invalid' }) 
+    email: string;
+
     @MinLength(4)
     @MaxLength(40)
     @IsString()
-    username: string;
+    userName: string;
 
     @MinLength(4)
     @MaxLength(20)
     @IsString()
-    @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {message: 'password too weak'})
+    @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, { message: 'Password too weak' })
     password: string;
 
     @MinLength(4)
     @MaxLength(20)
     @IsString()
-    @Matches('password')
+    @IsNotEmpty({ message: 'Password confirmation is required' })
+    @ValidateIf(o => o.password)
     passwordConfirm: string;
+
+    @IsOptional() 
+    @IsIn(['user', 'admin'], { message: 'Role must be one of the following: user, admin, moderator' })
+    role: string = 'user';
+
+    validatePasswordConfirm() {
+        return this.password === this.passwordConfirm;
+    }
 }
