@@ -9,13 +9,14 @@ export class AuthController {
     constructor(private readonly authServices: AuthService){}
     
     @Post('signUp')
-    signUp(@Body() signUpDto: SignUpDto){
-        return signUpDto
+    async signUp(@Body() signUpDto: SignUpDto){
+        const response = await this.authServices.signUp()
+        return response
     }
     @Post('signIn')
     async signIn(@Body() signInDto: SignInDto){
-        const res = await this.authServices.signIn()
-        return res
+        const response = await this.authServices.signIn()
+        return response
     }
     @Post('refresh-token')
     refreshToken(){

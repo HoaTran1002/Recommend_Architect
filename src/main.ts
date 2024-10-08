@@ -10,7 +10,7 @@ async function bootstrap() {
     whitelist: true,
     forbidNonWhitelisted: true
   }))
-  await app.listen(varsEnv.PORT);
-  logger.log(`app runing on port ${varsEnv.PORT}`)
+  await app.listen(varsEnv.port);
+  logger.log(`app runing on port: http://localhost:${varsEnv.port}`)
 }
 bootstrap();
