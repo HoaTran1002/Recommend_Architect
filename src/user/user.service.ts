@@ -1,4 +1,4 @@
-import { Injectable, Inject, ConflictException, NotFoundException } from '@nestjs/common';
+import { Injectable, Inject, ConflictException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { User } from './entity/user.entity';
@@ -10,8 +10,6 @@ export class UserService {
         @Inject('USER_REPOSITORY')
         private userRepository: Repository<User>
     ) {}
-
-
 
     async createUser(userDto: Partial<Omit<UserDto, 'id' | 'refresh_token'>>) {
 
@@ -31,8 +29,6 @@ export class UserService {
             });
             const response = await this.userRepository.save(user);
             return response
-  
-       
     }
     async updateUserRefreshToken(id:string,refreshToken:string){
         const record = await this.findOneByUserId(id)
@@ -44,6 +40,13 @@ export class UserService {
         await this.findOneByUserId(id)
         const response = await this.userRepository.update(id,user)
         return response 
+    }
+    async findRefreshTokenById(id:string){
+        const user = await this.userRepository.findOne({ where: { id } });
+        if (!user) {
+            throw new NotFoundException(`User with id ${id} not found`);
+        }
+        return user.refresh_token;
     }
     async findOneByEmail(email: string):Promise<User> {
             const response = await this.userRepository.findOne({ where: { email } });

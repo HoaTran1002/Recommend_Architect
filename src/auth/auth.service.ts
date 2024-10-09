@@ -52,10 +52,13 @@ export class AuthService {
         return {userIfor,accessToken,refreshToken}
     }
     async refreshToken(refreshTokenDto: RefreshTokenDto){
-        
         const jwtPayload = await this.verifyRefreshToken(refreshTokenDto.refresh_token)
         
         const userExist = await this.userServices.findOneByUserId(jwtPayload.id)
+
+        if(!(userExist.refresh_token === refreshTokenDto.refresh_token)){
+            throw new UnauthorizedException('Refresh token is invalid');
+        }
 
         if(!userExist){
             throw new NotFoundException('')
@@ -75,7 +78,6 @@ export class AuthService {
             secret: ACCESS_TOKEN_SECRET_KEY,
             expiresIn: '60s'
         })
-        console.log('finish generateAccessToken')
         return token
     }
     async generateRefreshToken(jwtPayload:JwtPayload){
@@ -128,5 +130,4 @@ export class AuthService {
         }
 
     }
-    
 }
