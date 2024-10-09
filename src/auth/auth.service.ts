@@ -1,12 +1,13 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
-import { varsEnv } from 'src/config/env.config';
+import { TokenExpiredError } from 'jsonwebtoken';
 import { SignUpDto } from './dto/sign-up.dto';
 import { SignInDto } from './dto/sign-in.dto';
 import { JwtPayload } from './interface/jwt-payload.interface';
 import * as bcrypt from 'bcrypt';
-import { ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY } from 'src/user/user.constants';
+import { ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY } from 'src/common/constants';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 @Injectable()
 export class AuthService {
@@ -50,18 +51,40 @@ export class AuthService {
         const userIfor = await this.userServices.findOneByEmail(signInDto.email)
         return {userIfor,accessToken,refreshToken}
     }
-    async refreshToken(){
+    async refreshToken(refreshTokenDto: RefreshTokenDto){
+        
+        const jwtPayload = await this.verifyRefreshToken(refreshTokenDto.refresh_token)
+        
+        const userExist = await this.userServices.findOneByUserId(jwtPayload.id)
 
+        if(!userExist){
+            throw new NotFoundException('')
+        }
+        const accessToken = await this.generateAccessToken(jwtPayload)
+        const refreshToken = await this.generateRefreshToken(jwtPayload)
+        await this.userServices.updateUserRefreshToken(jwtPayload.id,refreshToken)
+        return {accessToken,refreshToken}
     }
     async generateAccessToken(jwtPayload:JwtPayload){
-        const token = await this.jwtServices.signAsync(jwtPayload,{
+        const payload:JwtPayload = {
+            id: jwtPayload.id,
+            userName:jwtPayload.userName,
+            email: jwtPayload.email
+        };
+        const token = await this.jwtServices.signAsync(payload,{
             secret: ACCESS_TOKEN_SECRET_KEY,
             expiresIn: '60s'
         })
+        console.log('finish generateAccessToken')
         return token
     }
     async generateRefreshToken(jwtPayload:JwtPayload){
-        const token = await this.jwtServices.signAsync(jwtPayload,{
+        const payload:JwtPayload = {
+            id: jwtPayload.id,
+            userName:jwtPayload.userName,
+            email: jwtPayload.email
+        };
+        const token = await this.jwtServices.signAsync(payload,{
             secret: REFRESH_TOKEN_SECRET_KEY,
             expiresIn: '7d'
         })
@@ -69,23 +92,41 @@ export class AuthService {
     }
     async verifyAccessToken(accessToken:string):Promise<JwtPayload>{
         const privateKey = ACCESS_TOKEN_SECRET_KEY
-        const jwtPayload:JwtPayload = await this.jwtServices.verifyAsync(
-            accessToken,
-            {
-                secret: privateKey
+        try {
+            const jwtPayload:JwtPayload = await this.jwtServices.verifyAsync(
+                accessToken,
+                {
+                    secret: privateKey
+                }
+            )
+            return jwtPayload
+        } catch (error) {
+            if (error instanceof TokenExpiredError) {
+                throw new UnauthorizedException('Refresh token has expired');
+            } else {
+                throw new UnauthorizedException('Refresh token is not valid');
             }
-        )
-        return jwtPayload
+        }
+
     }
     async verifyRefreshToken(refreshToken:string){
         const privateKey = REFRESH_TOKEN_SECRET_KEY
-        const jwtPayload:JwtPayload = await this.jwtServices.verifyAsync(
-            refreshToken,
-            {
-                secret: privateKey
+        try {
+            const jwtPayload:JwtPayload = await this.jwtServices.verifyAsync(
+                refreshToken,
+                {
+                    secret: privateKey
+                }
+            )
+            return jwtPayload
+        } catch (error) {
+            if (error instanceof TokenExpiredError) {
+                throw new UnauthorizedException('Refresh token has expired');
+            } else {
+                throw new UnauthorizedException('Refresh token is not valid');
             }
-        )
-        return jwtPayload
+        }
+
     }
     
 }

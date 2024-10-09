@@ -42,35 +42,24 @@ export class UserService {
     }
     async updateUser(id:string,user:Omit<User,'id'>){
         await this.findOneByUserId(id)
-        await this.userRepository.update(id,user)
+        const response = await this.userRepository.update(id,user)
+        return response 
     }
     async findOneByEmail(email: string):Promise<User> {
-        try {
             const response = await this.userRepository.findOne({ where: { email } });
             return response
-        } catch (error) {
-            throw new Error(error)
-        }
 
     }
 
     async findOneByUsername(username: string):Promise<User> {
-        try {
             const response = await this.userRepository.findOne({ where: { userName: username } });            
             return response      
-        } catch (error) {
-            throw new Error(error)
-        }
 
     }
 
     async findOneByUserId(userId: string):Promise<User> {
-        try {
             const response = await this.userRepository.findOne({ where: { id: userId } });           
             return response
-        } catch (error) {
-            throw new Error(error)
-        }
 
     }
 

@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { SignUpDto } from './dto/sign-up.dto';
 import { SignInDto } from './dto/sign-in.dto';
 import { AuthService } from './auth.service';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 
 @Controller('auth')
@@ -19,8 +20,9 @@ export class AuthController {
         return response
     }
     @Post('refresh-token')
-    refreshToken(){
-        return
+    async refreshToken(@Body() refreshTokenDto: RefreshTokenDto){
+        const response = await this.authServices.refreshToken(refreshTokenDto)
+        return response
     }
     @Post('logout')
     logout(){
