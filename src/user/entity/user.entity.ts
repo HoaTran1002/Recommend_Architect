@@ -32,6 +32,6 @@ export class User {
     @Column({ default: true })
     active: boolean;
 
-    @Column({ nullable: true })
+    @Column({ nullable: true, type: 'text' })
     refresh_token: string;
 }
