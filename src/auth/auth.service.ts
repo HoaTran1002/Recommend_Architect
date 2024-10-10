@@ -130,7 +130,8 @@ export class AuthService {
         }
 
     }
-    async logout(){
-        
+    async logout(id:string){
+        await this.userServices.deleteRefreshToken(id)
+        return 'delete token success'
     }
 }

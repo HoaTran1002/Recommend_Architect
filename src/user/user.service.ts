@@ -30,6 +30,14 @@ export class UserService {
             const response = await this.userRepository.save(user);
             return response
     }
+    async deleteRefreshToken(id:string){
+        const user = await this.findOneByUserId(id)
+        if (!user) {
+            throw new NotFoundException(`User with id ${id} not found`);
+        }
+        const response = await this.userRepository.update(id,{refresh_token:null })
+        return response
+    }
     async updateUserRefreshToken(id:string,refreshToken:string){
         const record = await this.findOneByUserId(id)
         record.refresh_token = refreshToken

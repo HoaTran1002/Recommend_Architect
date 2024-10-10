@@ -3,6 +3,8 @@ import { SignUpDto } from './dto/sign-up.dto';
 import { SignInDto } from './dto/sign-in.dto';
 import { AuthService } from './auth.service';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { identity } from 'rxjs';
+import { LogoutDto } from './dto/logout.dto';
 
 
 @Controller('auth')
@@ -25,7 +27,8 @@ export class AuthController {
         return response
     }
     @Post('logout')
-    logout(){
-        return 
+    async logout(@Body() logoutDto:LogoutDto){
+        const response = await this.authServices.logout(logoutDto.id)
+        return response
     }
 }
