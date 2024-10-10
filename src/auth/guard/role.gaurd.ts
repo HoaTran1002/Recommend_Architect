@@ -3,28 +3,14 @@ import { AuthService } from "../auth.service";
 import { BlacklistTokenService } from "src/blacklist-token/blacklist-token.service";
 
 @Injectable()
-export class AuthGuard implements CanActivate{
+export class RoleGuard implements CanActivate{
     constructor(private readonly authServices: AuthService, private readonly blacklistTokenService: BlacklistTokenService){}
-    async canActivate(context: ExecutionContext): Promise<boolean> {
+    async canActivate(context: ExecutionContext,): Promise<boolean> {
         const request = context.switchToHttp().getRequest();
         const authorizationHeader = request.headers['authorization']
-
-        if (!authorizationHeader) {
-            throw new UnauthorizedException('Authorization header is missing');
-        }
-
         const accessToken = authorizationHeader.split(' ')[1]; 
-        if (!accessToken) {
-            throw new UnauthorizedException('Access token is missing');
-        }
-
-        const isBlacklisted = await this.blacklistTokenService.isTokenBlacklisted(accessToken);
-       if (isBlacklisted) {
-            throw new UnauthorizedException('Access token is blacklisted');
-        }
-
         const payload = await this.authServices.verifyAccessToken(accessToken)
-        if(!payload){
+        if((payload.role =='admin')){
             return false
         }
         return true

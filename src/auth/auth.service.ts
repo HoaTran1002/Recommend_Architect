@@ -8,17 +8,19 @@ import { JwtPayload } from './interface/jwt-payload.interface';
 import * as bcrypt from 'bcrypt';
 import { ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY } from 'src/common/constants';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { BlacklistTokenService } from 'src/blacklist-token/blacklist-token.service';
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly userServices: UserService, private readonly jwtServices: JwtService){}
+    constructor(private readonly userServices: UserService, private readonly jwtServices: JwtService, private readonly blacklistTokenService: BlacklistTokenService){}
     async signUp(signUpDto: SignUpDto){
         const newUser = await this.userServices.createUser(signUpDto)
     
         const jwtPayload:JwtPayload = {
             id: newUser.id,
             email: newUser.email,
-            userName: newUser.userName
+            userName: newUser.userName,
+            role: newUser.role
         }
 
         const accessToken = await this.generateAccessToken(jwtPayload)
@@ -41,7 +43,8 @@ export class AuthService {
         const jwtPayload:JwtPayload = {
             id: userExist.id,
             email: userExist.email,
-            userName: userExist.userName
+            userName: userExist.userName,
+            role: userExist.role
         }
 
         const accessToken = await this.generateAccessToken(jwtPayload)
@@ -72,7 +75,8 @@ export class AuthService {
         const payload:JwtPayload = {
             id: jwtPayload.id,
             userName:jwtPayload.userName,
-            email: jwtPayload.email
+            email: jwtPayload.email,
+            role: jwtPayload.role
         };
         const token = await this.jwtServices.signAsync(payload,{
             secret: ACCESS_TOKEN_SECRET_KEY,
@@ -84,7 +88,8 @@ export class AuthService {
         const payload:JwtPayload = {
             id: jwtPayload.id,
             userName:jwtPayload.userName,
-            email: jwtPayload.email
+            email: jwtPayload.email,
+            role: jwtPayload.role
         };
         const token = await this.jwtServices.signAsync(payload,{
             secret: REFRESH_TOKEN_SECRET_KEY,
@@ -130,8 +135,18 @@ export class AuthService {
         }
 
     }
-    async logout(id:string){
+    async logout(id:string,authorization:string){
         await this.userServices.deleteRefreshToken(id)
-        return 'delete token success'
+        if (!authorization) {
+            throw new UnauthorizedException('Authorization header is missing');
+        }
+        const accessToken = authorization.replace('Bearer ', '');
+        const isBlacklisted = await this.blacklistTokenService.isTokenBlacklisted(accessToken);
+    
+        if (isBlacklisted) {
+            return { message: 'User already logged out.' };
+        }
+        const response = await this.blacklistTokenService.addTokenToBlacklist(accessToken);
+        return response
     }
 }
