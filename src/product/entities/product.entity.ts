@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Category } from 'src/category/entities/category.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
 @Entity('Product')
 export class Product {
@@ -25,9 +26,6 @@ export class Product {
 
   @Column('simple-array', { nullable: true })
   tags: string[];
-
-  @Column({ nullable: true })
-  category: string;
 
   @Column({ type: 'float', default: 0 })
   rating: number;
@@ -73,4 +71,7 @@ export class Product {
 
   @Column({ nullable: true })
   lastUpdated: Date;
+
+  @ManyToOne(() => Category, (category) => category.products)
+  category: Category;
 }
