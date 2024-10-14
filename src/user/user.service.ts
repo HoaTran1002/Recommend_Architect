@@ -3,14 +3,15 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { User } from './entity/user.entity';
 import { UserDto } from './dto/user.dto';
+import { RoleService } from 'src/role/role.service';
 
 @Injectable()
 export class UserService {
     constructor(
         @Inject('USER_REPOSITORY')
-        private userRepository: Repository<User>
+        private userRepository: Repository<User>,
+        private readonly roleService: RoleService
     ) {}
-
     async createUser(userDto: Partial<Omit<UserDto, 'id' | 'refresh_token'>>) {
 
             const existingUserByEmail = await this.findOneByEmail(userDto.email);
@@ -22,6 +23,14 @@ export class UserService {
             if (existingUserByUsername) {
                 throw new ConflictException('Username already exists');
             }
+
+            const role = userDto.role.name || 'user'; 
+            const existingRole = await this.roleService.findOneByName(role);
+            
+            if (!existingRole) {
+              throw new ConflictException(`Role '${role}' does not exist`);
+            }
+
             const hashedPassword = await bcrypt.hash(userDto.password, 10);
             const user = this.userRepository.create({
                 ...userDto,
@@ -30,6 +39,7 @@ export class UserService {
             const response = await this.userRepository.save(user);
             return response
     }
+
     async deleteRefreshToken(id:string){
         const user = await this.findOneByUserId(id)
         if (!user) {

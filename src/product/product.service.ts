@@ -12,11 +12,14 @@ export class ProductService {
 
   }
   async create(createProductDto: CreateProductDto) {
-    return this.productRepository.create(createProductDto) 
+    const record = this.productRepository.create(createProductDto) 
+    const response = await this.productRepository.save(record)
+    return response
   }
 
-  findAll() {
-    return `This action returns all product`;
+  async findAll() {
+    const response = await this.productRepository.find({})
+    return response
   }
 
   findOne(id: number) {

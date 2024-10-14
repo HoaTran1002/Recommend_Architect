@@ -1,4 +1,5 @@
 import { IsString, MinLength, MaxLength, Matches, ValidateIf, IsNotEmpty, IsEmail, IsOptional, IsIn } from "class-validator";
+import { Role } from "src/role/entities/role.entity";
 
 export class SignUpDto {
 
@@ -25,7 +26,7 @@ export class SignUpDto {
 
     @IsOptional() 
     @IsIn(['user', 'admin'], { message: 'Role must be one of the following: user, admin, moderator' })
-    role: string = 'user';
+    role: Role;
 
     validatePasswordConfirm() {
         return this.password === this.passwordConfirm;

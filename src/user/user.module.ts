@@ -5,9 +5,10 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { AuthModule } from 'src/auth/auth.module';
 import { BlacklistTokenModule } from 'src/blacklist-token/blacklist-token.module';
+import { RoleModule } from 'src/role/role.module';
 
 @Module({
-  imports: [DatabaseModule,BlacklistTokenModule,forwardRef(() => AuthModule)],
+  imports: [DatabaseModule,BlacklistTokenModule,forwardRef(() => AuthModule), RoleModule],
   providers: [...UserProviders,UserService],
   exports: [UserService],
   controllers: [UserController]

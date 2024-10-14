@@ -10,7 +10,7 @@ export class RoleGuard implements CanActivate{
         const authorizationHeader = request.headers['authorization']
         const accessToken = authorizationHeader.split(' ')[1]; 
         const payload = await this.authServices.verifyAccessToken(accessToken)
-        if((payload.role =='admin')){
+        if((payload.role.name =='admin')){
             return false
         }
         return true
