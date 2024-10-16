@@ -8,7 +8,7 @@ export class UserController {
     constructor(private readonly userServices: UserService){}
     @UseGuards(AuthGuard)
     // @SetMetadata('roles', ['admin', 'instructor']) 
-    @Roles('admin', 'instructor')
+    @Roles('user')
     @Get('all')
     async getAll(){
         return await this.userServices.findAllUser()

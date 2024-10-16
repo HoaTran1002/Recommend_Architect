@@ -22,14 +22,42 @@
 //     },
 //   },
 // ];
+// import mongoose from 'mongoose';
+// import { MONGODB_URI } from 'src/common/constants';
+// import { DATA_SOURCE } from 'src/common/services';
+
+// export const databaseProviders = [
+//   {
+//     provide: DATA_SOURCE,
+//     useFactory: (): Promise<typeof mongoose> =>
+//     mongoose.connect(MONGODB_URI),
+//   },
+// ];
 import mongoose from 'mongoose';
 import { MONGODB_URI } from 'src/common/constants';
 import { DATA_SOURCE } from 'src/common/services';
-
+let isConnected: boolean = false;
 export const databaseProviders = [
   {
     provide: DATA_SOURCE,
-    useFactory: (): Promise<typeof mongoose> =>
-    mongoose.connect(MONGODB_URI),
+    useFactory: async (): Promise<typeof mongoose> => {
+      if (isConnected) {
+        console.log('MongoDB already connected');
+        return mongoose;
+      }
+
+      try {
+        await mongoose.connect(MONGODB_URI,{
+          maxPoolSize: 10, 
+        });
+        isConnected = true;
+        console.log('MongoDB connected successfully');
+        return mongoose;
+      } catch (error) {
+        console.error('MongoDB connection error:', error);
+        throw error;
+      }
+    },
+    
   },
 ];

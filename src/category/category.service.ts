@@ -45,6 +45,6 @@ export class CategoryService {
     if (!record) {
       throw new NotFoundException(`Category with id ${id} not found`);
     }
-    return { message: `Category with id ${id} has been removed` };
+    return { message: `Category with id ${id} has been removed ` };
   }
 }
