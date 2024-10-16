@@ -2,7 +2,7 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CATEGORY_REPOSITORY } from 'src/common/services';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { Category } from './entities/category.entity';
 
 @Injectable()
@@ -40,7 +40,8 @@ export class CategoryService {
   }
 
   async remove(id: string) {
-    const record = await this.categoryRepository.findByIdAndDelete(id);
+    const objectId = new mongoose.Types.ObjectId(id);
+    const record = await this.categoryRepository.findByIdAndDelete(objectId);
     if (!record) {
       throw new NotFoundException(`Category with id ${id} not found`);
     }

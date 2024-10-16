@@ -27,7 +27,7 @@ export class AuthService {
             userName: newUser.userName,
             role: newUser.role,
         };
-
+        console.log(newUser.id)
         const accessToken = await this.generateAccessToken(jwtPayload);
         const refreshToken = await this.generateRefreshToken(jwtPayload);
 

@@ -1,5 +1,5 @@
 import { Injectable, Inject, ConflictException, NotFoundException } from '@nestjs/common';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { User } from './entity/user.entity';
 import { UserDto } from './dto/user.dto';
@@ -72,22 +72,28 @@ export class UserService {
 
     async findRefreshTokenById(id: string) {
         const user = await this.findOneByUserId(id);
-        return user.refresh_token; 
+        const response = user.refresh_token; 
+        return response
     }
 
     async findOneByEmail(email: string): Promise<User | null> {
-        return await this.userRepository.findOne({ email });
+        const response = await this.userRepository.findOne({ email });
+        return response
     }
 
     async findOneByUsername(username: string): Promise<User | null> {
-        return await this.userRepository.findOne({ userName: username });
+        const response = await this.userRepository.findOne({ userName: username });
+        return response
     }
 
     async findOneByUserId(userId: string): Promise<User | null> {
-        return await this.userRepository.findOne({ id: userId });
+        const objectId = new mongoose.Types.ObjectId(userId);
+        const response = await this.userRepository.findOne({ _id: objectId });
+        return response
     }
 
     async findAllUser() {
-        return await this.userRepository.find();
+        const response =  await this.userRepository.find();
+        return response
     }
 }
