@@ -1,13 +1,14 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, SetMetadata, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { AuthGuard } from 'src/auth/guard/auth.guard';
-import { RoleGuard } from 'src/auth/guard/role.gaurd';
+import { AuthGuard } from 'src/guard/auth.guard';
+import { RoleGuard, Roles } from 'src/guard/roles.guard';
 
 @Controller('user')
 export class UserController {
     constructor(private readonly userServices: UserService){}
     @UseGuards(AuthGuard)
-    @UseGuards(RoleGuard)
+    // @SetMetadata('roles', ['admin', 'instructor']) 
+    @Roles('admin', 'instructor')
     @Get('all')
     async getAll(){
         return await this.userServices.findAllUser()

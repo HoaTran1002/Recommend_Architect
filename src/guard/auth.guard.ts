@@ -1,5 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
-import { AuthService } from "../auth.service";
+import { AuthService } from "src/auth/auth.service";
 import { BlacklistTokenService } from "src/blacklist-token/blacklist-token.service";
 
 @Injectable()
