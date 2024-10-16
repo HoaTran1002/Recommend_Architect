@@ -1,17 +1,19 @@
-import { User } from 'src/user/entity/user.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import * as mongoose from 'mongoose';
 
-@Entity('Role')
-export class Role {
-  @PrimaryGeneratedColumn('uuid')
+export const RoleSchema = new mongoose.Schema({
+  name: { type: String, required: true, unique: true },
+  description: { type: String, nullable: true },
+  parentId: { type: String, nullable: true },
+  users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  isActive: { type: Boolean, default: true },
+  tags: { type: [String], nullable: true },
+});
+export interface Role extends mongoose.Document {
   id: string;
-
-  @Column({ unique: true })
   name: string;
-
-  @Column({ nullable: true })
-  description: string;
-
-  @OneToMany(() => User, (user) => user.role)
-  users: User[];
+  description?: string;
+  parentId?: string;
+  users?: string[];
+  isActive: boolean;
+  tags?: string[];
 }

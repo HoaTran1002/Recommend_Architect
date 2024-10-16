@@ -9,7 +9,8 @@ const envSchema = z.object({
     MYSQL_PASSWORD:z.string(),
     MYSQL_ROOT_PASSWORD:z.string(),
     ACCESS_TOKEN_SECRET_KEY:z.string(),
-    REFRESH_TOKEN_SECRET_KEY:z.string()
+    REFRESH_TOKEN_SECRET_KEY:z.string(),
+    MONGODB_URI: z.string()
 
 })
 try {
@@ -26,5 +27,6 @@ export const varsEnv = {
     mysqlPassword:envs.MYSQL_PASSWORD,
     msqlRootPassword:envs.MYSQL_ROOT_PASSWORD,
     accessTokenSecretKey: envs.ACCESS_TOKEN_SECRET_KEY,
-    refreshTokenSecretKey: envs.REFRESH_TOKEN_SECRET_KEY
+    refreshTokenSecretKey: envs.REFRESH_TOKEN_SECRET_KEY,
+    mongodbUri: envs.MONGODB_URI
 }

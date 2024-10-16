@@ -1,13 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import * as mongoose from 'mongoose';
 
-@Entity('blacklist')
-export class BlacklistToken {
-  @PrimaryGeneratedColumn()
-  id: number;
+export const BlacklistTokenSchema = new mongoose.Schema({
+  token: { type: String, nullable: true, required: true },
+  expiresAt: { type: Date, required: true },
+});
 
-  @Column({ nullable: true, type: 'text' })
+export interface BlacklistToken {
+  id?: string;  
   token: string;
-
-  @Column({ type: 'timestamp' })
   expiresAt: Date;
 }

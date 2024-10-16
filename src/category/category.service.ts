@@ -1,35 +1,49 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CATEGORY_REPOSITORY } from 'src/common/services';
-import { Repository } from 'typeorm';
+import { Model } from 'mongoose';
 import { Category } from './entities/category.entity';
 
 @Injectable()
 export class CategoryService {
-  constructor(@Inject(CATEGORY_REPOSITORY)
-  private readonly categoryRepository : Repository<Category>
-){}
+  constructor(
+    @Inject(CATEGORY_REPOSITORY)
+    private readonly categoryRepository: Model<Category>
+  ) {}
+
   async create(createCategoryDto: CreateCategoryDto) {
-    const record = this.categoryRepository.create(createCategoryDto)
-    const response = await this.categoryRepository.save(record)
-    return response
+    const record = new this.categoryRepository(createCategoryDto);
+    const response = await record.save();
+    return response;
   }
 
   async findAll() {
-    const response = await this.categoryRepository.find({})
-    return response
+    const response = await this.categoryRepository.find({});
+    return response;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  async findOne(id: string) {
+    const record = await this.categoryRepository.findById(id);
+    if (!record) {
+      throw new NotFoundException(`Category with id ${id} not found`);
+    }
+    return record;
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+  async update(id: string, updateCategoryDto: UpdateCategoryDto) {
+    const record = await this.categoryRepository.findByIdAndUpdate(id, updateCategoryDto, { new: true });
+    if (!record) {
+      throw new NotFoundException(`Category with id ${id} not found`);
+    }
+    return record;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  async remove(id: string) {
+    const record = await this.categoryRepository.findByIdAndDelete(id);
+    if (!record) {
+      throw new NotFoundException(`Category with id ${id} not found`);
+    }
+    return { message: `Category with id ${id} has been removed` };
   }
 }

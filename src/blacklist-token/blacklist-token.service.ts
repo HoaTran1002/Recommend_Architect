@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Model } from 'mongoose';
 import { BlacklistToken } from './entities/blacklist-token.entity';
 import { BLACKLIST_TOKEN_REPOSITORY } from 'src/common/services';
 
@@ -7,15 +7,17 @@ import { BLACKLIST_TOKEN_REPOSITORY } from 'src/common/services';
 export class BlacklistTokenService {
   constructor(
     @Inject(BLACKLIST_TOKEN_REPOSITORY)
-    private blacklistTokenRepository: Repository<BlacklistToken>
-) {}
+    private readonly blacklistTokenRepository: Model<BlacklistToken>
+  ) {}
+
   async addTokenToBlacklist(token: string) {
-    const blacklistToken = this.blacklistTokenRepository.create({ token });
-    const response = await this.blacklistTokenRepository.save(blacklistToken);
-    return response
+    const blacklistToken = new this.blacklistTokenRepository({ token });
+    const response = await blacklistToken.save();
+    return response;
   }
+
   async isTokenBlacklisted(token: string): Promise<boolean> {
-    const tokenInBlacklist = await this.blacklistTokenRepository.findOne({ where: { token } });
+    const tokenInBlacklist = await this.blacklistTokenRepository.findOne({ token });
     return !!tokenInBlacklist; 
   }
 }

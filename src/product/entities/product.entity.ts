@@ -1,77 +1,54 @@
-import { Category } from 'src/category/entities/category.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import * as mongoose from 'mongoose';
 
-@Entity('Product')
-export class Product {
-  @PrimaryGeneratedColumn()
-  id: string;
+export const ProductSchema = new mongoose.Schema({
+  title: { type: String, required: true, unique: true },
+  description: { type: String, required: true },
+  price: { type: Number, required: true },
+  enrollmentCount: { type: Number, default: 0 },
+  releaseDate: { type: Date },
+  isActive: { type: Boolean, default: true },
+  tags: { type: [String], nullable: true },
+  rating: { type: Number, default: 0 },
+  ratingCount: { type: Number, default: 0 },
+  discount: { type: Number, default: 0 },
+  viewCount: { type: Number, default: 0 },
+  prerequisites: { type: [String], nullable: true },
+  duration: { type: String, nullable: true },
+  language: { type: String, nullable: true },
+  purchaseCount: { type: Number, default: 0 },
+  popularityScore: { type: Number, default: 0 },
+  videoPreviewUrl: { type: String, nullable: true },
+  learningObjectives: { type: [String], nullable: true },
+  certificate: { type: Boolean, nullable: true },
+  refundPolicy: { type: String, nullable: true },
+  targetAudience: { type: [String], nullable: true },
+  lastUpdated: { type: Date },
+  category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
+});
+import { Document } from 'mongoose';
 
-  @Column({ unique: true })
+export interface Product extends Document {
   title: string;
-
-  @Column('text')
   description: string;
-
-  @Column('float')
   price: number;
-
-  @Column({ type: 'int', default: 0 })
-  enrollmentCount: number; 
-
-  @Column({ type: 'date' })
-  releaseDate: Date; 
-
-  @Column({ default: true })
-  isActive: boolean;
-
-  @Column('simple-array', { nullable: true })
-  tags: string[];
-
-  @Column({ type: 'float', default: 0 })
-  rating: number;
-
-  @Column({ type: 'int', default: 0 })
-  ratingCount: number;
-
-  @Column({ type: 'float', default: 0 })
-  discount: number;
-
-  @Column({ type: 'int', default: 0 })
-  viewCount: number;
-
-  @Column('simple-array', { nullable: true })
-  prerequisites: string[];
-
-  @Column({ nullable: true })
-  duration: string;
-
-  @Column({ nullable: true })
-  language: string;
-
-  @Column({ type: 'int', default: 0 })
-  purchaseCount: number;
-
-  @Column({ type: 'float', default: 0 })
-  popularityScore: number;
-
-  @Column({ nullable: true })
-  videoPreviewUrl: string;
-
-  @Column('simple-array', { nullable: true })
-  learningObjectives: string[];
-
-  @Column({ nullable: true })
-  certificate: boolean;
-
-  @Column({ nullable: true })
-  refundPolicy: string;
-
-  @Column('simple-array', { nullable: true })
-  targetAudience: string[];
-
-  @Column({ nullable: true })
-  lastUpdated: Date;
-
-  @ManyToOne(() => Category, (category) => category.products)
-  category: Category;
+  enrollmentCount?: number;
+  releaseDate?: Date;
+  isActive?: boolean;
+  tags?: string[];
+  rating?: number;
+  ratingCount?: number;
+  discount?: number;
+  viewCount?: number;
+  prerequisites?: string[];
+  duration?: string;
+  language?: string;
+  purchaseCount?: number;
+  popularityScore?: number;
+  videoPreviewUrl?: string;
+  learningObjectives?: string[];
+  certificate?: boolean;
+  refundPolicy?: string;
+  targetAudience?: string[];
+  lastUpdated?: Date;
+  category: string;
 }
