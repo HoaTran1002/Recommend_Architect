@@ -4,7 +4,6 @@ import { AuthService } from './auth.service';
 import { UserModule } from 'src/user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { BlacklistTokenModule } from 'src/blacklist-token/blacklist-token.module';
-import { LoggerMiddleware } from 'src/middleware/logger.middleware';
 @Module({
   controllers: [AuthController],
   providers: [AuthService],
