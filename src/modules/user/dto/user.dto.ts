@@ -1,5 +1,5 @@
 import { IsString, MinLength, MaxLength, Matches, ValidateIf, IsNotEmpty, IsEmail, IsOptional, IsIn, IsBoolean, isNumber, IsNumber } from "class-validator";
-import { SignUpDto } from "src/auth/dto/sign-up.dto";
+import { SignUpDto } from "src/modules/auth/dto/sign-up.dto";
 
 export class UserDto extends SignUpDto{
     @IsOptional()

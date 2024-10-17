@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { UserService } from 'src/user/user.service';
+import { UserService } from 'src/modules/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { TokenExpiredError } from 'jsonwebtoken';
 import { SignUpDto } from './dto/sign-up.dto';
@@ -8,7 +8,7 @@ import { JwtPayload } from './interface/jwt-payload.interface';
 import * as bcrypt from 'bcrypt';
 import { ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY } from 'src/common/constants/env.constants';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
-import { BlacklistTokenService } from 'src/blacklist-token/blacklist-token.service';
+import { BlacklistTokenService } from 'src/modules/blacklist-token/blacklist-token.service';
 
 @Injectable()
 export class AuthService {

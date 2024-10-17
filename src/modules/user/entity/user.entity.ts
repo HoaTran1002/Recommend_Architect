@@ -13,7 +13,7 @@ export const UserSchema = new mongoose.Schema({
   refresh_token: { type: String, nullable: true },
 });
 import { Document } from 'mongoose';
-import { Role } from 'src/role/entities/role.entity';
+import { Role } from 'src/modules/role/entities/role.entity';
 
 export interface User extends Document {
   email: string;

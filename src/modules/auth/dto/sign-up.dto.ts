@@ -1,5 +1,5 @@
 import { IsString, MinLength, MaxLength, Matches, ValidateIf, IsNotEmpty, IsEmail, IsOptional, IsIn } from "class-validator";
-import { Role } from "src/role/entities/role.entity";
+import { Role } from "src/modules/role/entities/role.entity";
 
 export class SignUpDto {
 

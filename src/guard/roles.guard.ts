@@ -1,5 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable, ForbiddenException, UseGuards, Inject } from "@nestjs/common";
-import { AuthService } from "src/auth/auth.service";
+import { AuthService } from "src/modules/auth/auth.service";
 
 type ItemRole = 'user' | 'admin' | 'instructor';
 

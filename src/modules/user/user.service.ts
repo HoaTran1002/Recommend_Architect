@@ -3,7 +3,7 @@ import mongoose, { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { User } from './entity/user.entity';
 import { UserDto } from './dto/user.dto';
-import { RoleService } from 'src/role/role.service';
+import { RoleService } from 'src/modules/role/role.service';
 
 @Injectable()
 export class UserService {
