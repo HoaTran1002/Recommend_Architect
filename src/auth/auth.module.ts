@@ -11,10 +11,4 @@ import { LoggerMiddleware } from 'src/middleware/logger.middleware';
   imports: [UserModule, JwtModule, BlacklistTokenModule],
   exports: [AuthService],
 })
-export class AuthModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-    .apply(LoggerMiddleware)
-    .forRoutes('auth')
-  }
-}
+export class AuthModule {}

@@ -12,10 +12,4 @@ import { LoggerMiddleware } from 'src/middleware/logger.middleware';
     ...CategoryProviders
   ],
 })
-export class CategoryModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-    .apply(LoggerMiddleware)
-    .forRoutes('category')
-  }
-}
+export class CategoryModule {}

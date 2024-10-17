@@ -14,10 +14,4 @@ import { LoggerMiddleware } from 'src/middleware/logger.middleware';
   exports: [UserService],
   controllers: [UserController]
 })
-export class UserModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-    .apply(LoggerMiddleware)
-    .forRoutes('User')
-  }
-}
+export class UserModule {}

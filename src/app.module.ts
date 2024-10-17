@@ -12,7 +12,7 @@ import { RoleService } from './role/role.service';
 @Module({
   imports: [AuthModule, DatabaseModule, UserModule, BlacklistTokenModule, ProductModule, CategoryModule, RoleModule]
 })
-export class AppModule implements OnModuleInit {
+export class AppModule implements OnModuleInit{
   constructor(private readonly roleService: RoleService) {}
 
   async onModuleInit() {

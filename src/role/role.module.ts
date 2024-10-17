@@ -13,10 +13,4 @@ import { LoggerMiddleware } from 'src/middleware/logger.middleware';
   ],
   exports:[RoleService]
 })
-export class RoleModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-    .apply(LoggerMiddleware)
-    .forRoutes('role')
-  }
-}
+export class RoleModule {}
