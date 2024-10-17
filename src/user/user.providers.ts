@@ -1,5 +1,5 @@
 import { UserSchema } from "./entity/user.entity";
-import { DATA_SOURCE, USER_REPOSITORY } from "src/common/services";
+import { DATA_SOURCE, USER_REPOSITORY } from "src/common/constants/services.constants";
 import { Connection } from 'mongoose';
 export const UserProviders = [
     {

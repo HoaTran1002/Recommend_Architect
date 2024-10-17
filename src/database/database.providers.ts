@@ -34,8 +34,8 @@
 //   },
 // ];
 import mongoose from 'mongoose';
-import { MONGODB_URI } from 'src/common/constants';
-import { DATA_SOURCE } from 'src/common/services';
+import { MONGODB_URI } from 'src/common/constants/env.constants';
+import { DATA_SOURCE } from 'src/common/constants/services.constants';
 let isConnected: boolean = false;
 export const databaseProviders = [
   {

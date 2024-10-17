@@ -1,5 +1,5 @@
 import { ProductSchema } from "./entities/product.entity";
-import { DATA_SOURCE, PRODUCT_REPOSITORY } from "src/common/services";
+import { DATA_SOURCE, PRODUCT_REPOSITORY } from "src/common/constants/services.constants";
 import { Connection } from "mongoose";
 export const ProductProviders =[
     {
