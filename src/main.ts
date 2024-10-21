@@ -5,9 +5,9 @@ import { varsEnv } from './config/env.config';
 import { LoggerMiddleware } from './middleware/logger.middleware';
 
 async function bootstrap() {
-  const logger =new Logger('App Module')
+  const logger = new Logger('App Module')
   const app = await NestFactory.create(AppModule);
-  app.use(LoggerMiddleware)
+  app.use(new LoggerMiddleware().use);
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
     forbidNonWhitelisted: true

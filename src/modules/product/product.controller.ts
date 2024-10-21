@@ -16,7 +16,8 @@ export class ProductController {
 
   @Get()
   async findAll() {
-    return await this.productService.findAll();
+    const response = await this.productService.findAll();
+    return response
   }
 
   @Get(':id')
