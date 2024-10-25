@@ -17,7 +17,9 @@ export class UserService {
     private userRepository: Model<User>,
     private readonly roleService: RoleService,
   ) {}
-
+  async hello() {
+    return 'hello word!';
+  }
   async createUser(userDto: Partial<Omit<UserDto, 'id' | 'refresh_token'>>) {
     const existingUserByEmail = await this.findOneByEmail(userDto.email);
     if (existingUserByEmail) {

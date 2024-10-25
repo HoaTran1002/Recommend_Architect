@@ -1,7 +1,7 @@
-import { Controller, Get, SetMetadata, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { AuthGuard } from 'src/guard/auth.guard';
-import { RoleGuard, Roles } from 'src/guard/roles.guard';
+import { Roles } from 'src/guard/roles.guard';
 
 @Controller('user')
 export class UserController {

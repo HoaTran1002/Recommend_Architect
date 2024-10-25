@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CategoryController } from './category.controller';
 import { DatabaseModule } from 'src/database/database.module';
@@ -8,5 +8,6 @@ import { CategoryProviders } from './category.provider';
   imports: [DatabaseModule],
   controllers: [CategoryController],
   providers: [CategoryService, ...CategoryProviders],
+  exports: [CategoryService],
 })
 export class CategoryModule {}

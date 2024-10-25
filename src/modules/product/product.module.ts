@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductController } from './product.controller';
 import { ProductProviders } from './product.providers';
@@ -9,5 +9,6 @@ import { UserModule } from '../user/user.module';
   imports: [DatabaseModule, UserModule],
   controllers: [ProductController],
   providers: [ProductService, ...ProductProviders],
+  exports: [ProductService],
 })
 export class ProductModule {}

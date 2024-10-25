@@ -1,6 +1,5 @@
 import { Module, OnModuleInit } from '@nestjs/common';
 import { AuthModule } from './modules/auth/auth.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './modules/user/user.module';
 import { BlacklistTokenModule } from './modules/blacklist-token/blacklist-token.module';
@@ -8,6 +7,7 @@ import { ProductModule } from './modules/product/product.module';
 import { CategoryModule } from './modules/category/category.module';
 import { RoleModule } from './modules/role/role.module';
 import { RoleService } from './modules/role/role.service';
+import { RecommendationModule } from './modules/recommendation/recommendation.module';
 
 @Module({
   imports: [
@@ -18,6 +18,7 @@ import { RoleService } from './modules/role/role.service';
     ProductModule,
     CategoryModule,
     RoleModule,
+    RecommendationModule,
   ],
 })
 export class AppModule implements OnModuleInit {

@@ -1,9 +1,4 @@
-import {
-  forwardRef,
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-} from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { UserProviders } from './user.providers';
 import { DatabaseModule } from 'src/database/database.module';
 import { UserService } from './user.service';

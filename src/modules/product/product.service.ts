@@ -12,6 +12,10 @@ export class ProductService {
     private readonly productRepository: Model<Product>,
   ) {}
 
+  async hello() {
+    return 'hello word!';
+  }
+
   async create(createProductDto: CreateProductDto) {
     const record = new this.productRepository(createProductDto);
     const response = await record.save();
