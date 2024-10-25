@@ -1,6 +1,6 @@
 import { DataSource } from "typeorm";
 import { BlacklistToken, BlacklistTokenSchema } from "./entities/blacklist-token.entity";
-import { BLACKLIST_TOKEN_REPOSITORY, DATA_SOURCE } from "src/common/constants/services.constants";
+import { BLACKLIST_TOKEN_REPOSITORY, DATA_SOURCE } from "src/utils/constants/services.constants";
 import { Connection } from "mongoose";
 
 export const BlacklistTokenProviders = [

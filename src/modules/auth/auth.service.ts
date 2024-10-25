@@ -6,7 +6,7 @@ import { SignUpDto } from './dto/sign-up.dto';
 import { SignInDto } from './dto/sign-in.dto';
 import { JwtPayload } from './interface/jwt-payload.interface';
 import * as bcrypt from 'bcrypt';
-import { ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY } from 'src/common/constants/env.constants';
+import { ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY } from 'src/utils/constants/env.constants';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { BlacklistTokenService } from 'src/modules/blacklist-token/blacklist-token.service';
 

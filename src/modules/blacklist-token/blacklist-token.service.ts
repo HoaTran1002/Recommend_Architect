@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { BlacklistToken } from './entities/blacklist-token.entity';
-import { BLACKLIST_TOKEN_REPOSITORY } from 'src/common/constants/services.constants';
+import { BLACKLIST_TOKEN_REPOSITORY } from 'src/utils/constants/services.constants';
 
 @Injectable()
 export class BlacklistTokenService {

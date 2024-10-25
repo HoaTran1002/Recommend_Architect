@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { PRODUCT_REPOSITORY } from 'src/common/constants/services.constants';
+import { PRODUCT_REPOSITORY } from 'src/utils/constants/services.constants';
 import { Model } from 'mongoose';
 import { Product } from './entities/product.entity';
 

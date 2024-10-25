@@ -1,6 +1,6 @@
 import { Connection } from 'mongoose';
 import { RoleSchema } from './entities/role.entity';
-import { DATA_SOURCE, ROLE_REPOSITORY } from 'src/common/constants/services.constants';
+import { DATA_SOURCE, ROLE_REPOSITORY } from 'src/utils/constants/services.constants';
 
 export const RoleProviders = [
   {

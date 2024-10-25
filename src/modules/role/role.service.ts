@@ -3,7 +3,7 @@ import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { Role } from './entities/role.entity';
 import { Model } from 'mongoose';
-import { ROLE_REPOSITORY } from 'src/common/constants/services.constants';
+import { ROLE_REPOSITORY } from 'src/utils/constants/services.constants';
 
 @Injectable()
 export class RoleService {

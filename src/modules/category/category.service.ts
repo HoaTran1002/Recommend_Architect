@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { CATEGORY_REPOSITORY } from 'src/common/constants/services.constants';
+import { CATEGORY_REPOSITORY } from 'src/utils/constants/services.constants';
 import mongoose, { Model } from 'mongoose';
 import { Category } from './entities/category.entity';
 
