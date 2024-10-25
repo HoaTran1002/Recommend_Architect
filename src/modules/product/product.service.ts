@@ -9,7 +9,7 @@ import { Product } from './entities/product.entity';
 export class ProductService {
   constructor(
     @Inject(PRODUCT_REPOSITORY)
-    private readonly productRepository: Model<Product>
+    private readonly productRepository: Model<Product>,
   ) {}
 
   async create(createProductDto: CreateProductDto) {
@@ -23,7 +23,7 @@ export class ProductService {
     return response;
   }
 
-  async findOne(id: string) { 
+  async findOne(id: string) {
     const record = await this.productRepository.findById(id);
     if (!record) {
       throw new NotFoundException(`Product with id ${id} not found`);
@@ -32,7 +32,11 @@ export class ProductService {
   }
 
   async update(id: string, updateProductDto: UpdateProductDto) {
-    const record = await this.productRepository.findByIdAndUpdate(id, updateProductDto, { new: true });
+    const record = await this.productRepository.findByIdAndUpdate(
+      id,
+      updateProductDto,
+      { new: true },
+    );
     if (!record) {
       throw new NotFoundException(`Product with id ${id} not found`);
     }
@@ -46,4 +50,6 @@ export class ProductService {
     }
     return { message: `Product with id ${id} removed successfully` };
   }
+  //tiêu chí tìm kiếm:
+  async getProductForHomePage() {}
 }
