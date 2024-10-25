@@ -1,7 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ProductService } from '../product/product.service';
 import { UserService } from '../user/user.service';
 import { CategoryService } from '../category/category.service';
+import { Model } from 'mongoose';
+import { User } from '../user/entity/user.entity';
+import {
+  CATEGORY_REPOSITORY,
+  PRODUCT_REPOSITORY,
+  USER_REPOSITORY,
+} from 'src/utils/constants/services.constants';
+import { Product } from '../product/entities/product.entity';
+import { Category } from '../category/entities/category.entity';
 
 @Injectable()
 export class RecommendationService {
@@ -9,12 +18,48 @@ export class RecommendationService {
     private readonly productServices: ProductService,
     private readonly userServices: UserService,
     private readonly categoryServices: CategoryService,
+    @Inject(PRODUCT_REPOSITORY)
+    private readonly productRepository: Model<Product>,
+    @Inject(USER_REPOSITORY)
+    private userRepository: Model<User>,
+    @Inject(CATEGORY_REPOSITORY)
+    private readonly categoryRepository: Model<Category>,
   ) {}
 
-  async findAll() {
-    const data = await this.productServices.hello();
-    const data2 = await this.userServices.hello();
-    const data3 = await this.categoryServices.hello();
-    return `${data} ${data2} ${data3}`;
+  async recommendProductsForUser(userId: string, cursor?: string, limit = 10) {
+    const user = await this.userRepository.findById(userId).exec();
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const { interests, preferredCategories, viewedProducts } = user;
+
+    const queryConditions: any = {
+      tags: { $in: interests },
+      category: { $in: preferredCategories },
+      _id: { $nin: viewedProducts },
+    };
+
+    if (cursor) {
+      queryConditions._id.$gt = cursor;
+    }
+
+    const recommendedProducts = await this.productRepository
+      .find(queryConditions)
+      .sort({ _id: 1 })
+      .limit(limit)
+      .exec();
+
+    const nextCursor =
+      recommendedProducts.length > 0
+        ? recommendedProducts[recommendedProducts.length - 1]._id
+        : null;
+
+    return {
+      userId,
+      recommendedProducts,
+      nextCursor,
+      hasMore: recommendedProducts.length === limit,
+    };
   }
 }
