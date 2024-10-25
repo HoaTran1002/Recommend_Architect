@@ -12,9 +12,9 @@ export const CategorySchema = new mongoose.Schema({
 
 export interface Category extends Document {
   name: string;
-  description?: string; 
-  parentId?: string; 
-  products: string[]; 
-  isActive?: boolean; 
-  tags?: string[]; 
+  description?: string;
+  parentId?: string;
+  products: string[];
+  isActive?: boolean;
+  tags?: string[];
 }

@@ -7,7 +7,7 @@ import { BLACKLIST_TOKEN_REPOSITORY } from 'src/utils/constants/services.constan
 export class BlacklistTokenService {
   constructor(
     @Inject(BLACKLIST_TOKEN_REPOSITORY)
-    private readonly blacklistTokenRepository: Model<BlacklistToken>
+    private readonly blacklistTokenRepository: Model<BlacklistToken>,
   ) {}
 
   async addTokenToBlacklist(token: string) {
@@ -17,7 +17,9 @@ export class BlacklistTokenService {
   }
 
   async isTokenBlacklisted(token: string): Promise<boolean> {
-    const tokenInBlacklist = await this.blacklistTokenRepository.findOne({ token });
-    return !!tokenInBlacklist; 
+    const tokenInBlacklist = await this.blacklistTokenRepository.findOne({
+      token,
+    });
+    return !!tokenInBlacklist;
   }
 }

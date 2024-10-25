@@ -47,8 +47,8 @@ export const databaseProviders = [
       }
 
       try {
-        await mongoose.connect(MONGODB_URI,{
-          maxPoolSize: 10, 
+        await mongoose.connect(MONGODB_URI, {
+          maxPoolSize: 10,
         });
         isConnected = true;
         console.log('MongoDB connected successfully');
@@ -58,6 +58,5 @@ export const databaseProviders = [
         throw error;
       }
     },
-    
   },
 ];

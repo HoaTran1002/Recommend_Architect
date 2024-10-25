@@ -1,5 +1,4 @@
-export interface IResponse<T>{
-    data:T,
-    success: boolean;
+export interface IResponse<T> {
+  data: T;
+  success: boolean;
 }
-

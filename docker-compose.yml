@@ -1,22 +1,22 @@
-version: "3.7"
+version: '3.7'
 services:
   mysql:
     image: mysql:5.7
     container_name: mysql-5.7
-    restart: always                       
+    restart: always
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}               
-      MYSQL_USER: ${MYSQL_USER}                
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}         
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}    
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
-      - '3306:3306'                     
+      - '3306:3306'
     expose:
       - '3306'
     volumes:
       - mysql-db:/var/lib/mysql
 volumes:
-        mysql-db:
+  mysql-db:
 # version: "3.7"
 # services:
 #   mongodb:
@@ -28,9 +28,9 @@ volumes:
 #       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
 #       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
 #     ports:
-#       - '27017:27017'  
+#       - '27017:27017'
 #     volumes:
-#       - mongo-db:/data/db  
+#       - mongo-db:/data/db
 
 # volumes:
 #   mongo-db:

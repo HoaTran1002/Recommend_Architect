@@ -5,12 +5,12 @@ import { RoleGuard, Roles } from 'src/guard/roles.guard';
 
 @Controller('user')
 export class UserController {
-    constructor(private readonly userServices: UserService){}
-    @UseGuards(AuthGuard)
-    // @SetMetadata('roles', ['admin', 'instructor']) 
-    @Roles('user')
-    @Get('all')
-    async getAll(){
-        return await this.userServices.findAllUser()
-    }
+  constructor(private readonly userServices: UserService) {}
+  @UseGuards(AuthGuard)
+  // @SetMetadata('roles', ['admin', 'instructor'])
+  @Roles('user')
+  @Get('all')
+  async getAll() {
+    return await this.userServices.findAllUser();
+  }
 }

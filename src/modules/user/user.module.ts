@@ -1,4 +1,9 @@
-import { forwardRef, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  forwardRef,
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+} from '@nestjs/common';
 import { UserProviders } from './user.providers';
 import { DatabaseModule } from 'src/database/database.module';
 import { UserService } from './user.service';
@@ -8,9 +13,14 @@ import { BlacklistTokenModule } from 'src/modules/blacklist-token/blacklist-toke
 import { RoleModule } from 'src/modules/role/role.module';
 
 @Module({
-  imports: [DatabaseModule,BlacklistTokenModule,forwardRef(() => AuthModule), RoleModule],
-  providers: [...UserProviders,UserService],
+  imports: [
+    DatabaseModule,
+    BlacklistTokenModule,
+    forwardRef(() => AuthModule),
+    RoleModule,
+  ],
+  providers: [...UserProviders, UserService],
   exports: [UserService],
-  controllers: [UserController]
+  controllers: [UserController],
 })
 export class UserModule {}

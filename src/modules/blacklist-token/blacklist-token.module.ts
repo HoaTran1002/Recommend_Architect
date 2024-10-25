@@ -5,8 +5,7 @@ import { DatabaseModule } from 'src/database/database.module';
 
 @Module({
   imports: [DatabaseModule],
-  providers: [BlacklistTokenService,
-  ...BlacklistTokenProviders],
-  exports:[BlacklistTokenService]
+  providers: [BlacklistTokenService, ...BlacklistTokenProviders],
+  exports: [BlacklistTokenService],
 })
 export class BlacklistTokenModule {}

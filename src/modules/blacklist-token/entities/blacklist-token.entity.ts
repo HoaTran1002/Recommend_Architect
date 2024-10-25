@@ -6,7 +6,7 @@ export const BlacklistTokenSchema = new mongoose.Schema({
 });
 
 export interface BlacklistToken {
-  id?: string;  
+  id?: string;
   token: string;
   expiresAt: Date;
 }

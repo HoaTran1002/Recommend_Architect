@@ -9,7 +9,7 @@ import { Category } from './entities/category.entity';
 export class CategoryService {
   constructor(
     @Inject(CATEGORY_REPOSITORY)
-    private readonly categoryRepository: Model<Category>
+    private readonly categoryRepository: Model<Category>,
   ) {}
 
   async create(createCategoryDto: CreateCategoryDto) {
@@ -32,7 +32,11 @@ export class CategoryService {
   }
 
   async update(id: string, updateCategoryDto: UpdateCategoryDto) {
-    const record = await this.categoryRepository.findByIdAndUpdate(id, updateCategoryDto, { new: true });
+    const record = await this.categoryRepository.findByIdAndUpdate(
+      id,
+      updateCategoryDto,
+      { new: true },
+    );
     if (!record) {
       throw new NotFoundException(`Category with id ${id} not found`);
     }
