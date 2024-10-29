@@ -4,7 +4,6 @@ import {
   Injectable,
   ForbiddenException,
   UseGuards,
-  Inject,
 } from '@nestjs/common';
 import { AuthService } from 'src/modules/auth/auth.service';
 

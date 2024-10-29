@@ -7,6 +7,11 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
 async function bootstrap() {
   const logger = new Logger('App Module');
   const app = await NestFactory.create(AppModule);
+  app.enableCors({
+    origin: 'http://localhost:3001',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    credentials: true,
+  });
   app.use(new LoggerMiddleware().use);
   app.useGlobalPipes(
     new ValidationPipe({
