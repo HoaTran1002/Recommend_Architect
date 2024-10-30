@@ -26,7 +26,12 @@ export class RecommendationService {
     private readonly categoryRepository: Model<Category>,
   ) {}
 
-  async recommendProductsForUser(userId: string, cursor?: string, limit = 10) {
+  async recommendProductsForUser(
+    userId: string,
+    renderedProducts: string[],
+    cursor?: string,
+    limit = 5,
+  ) {
     const user = await this.userRepository.findById(userId).exec();
     if (!user) {
       throw new NotFoundException('User not found');
@@ -34,22 +39,37 @@ export class RecommendationService {
 
     const { interests, preferredCategories, viewedProducts } = user;
 
+    // Điều kiện truy vấn
     const queryConditions: any = {
       tags: { $in: interests },
       category: { $in: preferredCategories },
-      _id: { $nin: viewedProducts },
+      _id: { $nin: [...viewedProducts, ...renderedProducts] }, // Không lấy sản phẩm đã xem và đã render
     };
 
     if (cursor) {
-      queryConditions._id.$gt = cursor;
+      queryConditions._id.$gt = cursor; // Thêm điều kiện cho cursor
     }
 
-    const recommendedProducts = await this.productRepository
+    // Lấy sản phẩm theo điều kiện
+    let recommendedProducts = await this.productRepository
       .find(queryConditions)
       .sort({ _id: 1 })
       .limit(limit)
       .exec();
 
+    // Nếu không có sản phẩm phù hợp, lấy ngẫu nhiên sản phẩm khác
+    if (recommendedProducts.length === 0) {
+      recommendedProducts = await this.productRepository
+        .aggregate([
+          {
+            $match: { _id: { $nin: [...viewedProducts, ...renderedProducts] } },
+          }, // Lọc các sản phẩm chưa xem và chưa render
+          { $sample: { size: limit } }, // Lấy ngẫu nhiên
+        ])
+        .exec();
+    }
+
+    // Cập nhật nextCursor
     const nextCursor =
       recommendedProducts.length > 0
         ? recommendedProducts[recommendedProducts.length - 1]._id
@@ -62,6 +82,7 @@ export class RecommendationService {
       hasMore: recommendedProducts.length === limit,
     };
   }
+
   async recommendProductsWhenSearch(
     searchTerm: string,
     cursor?: string,
@@ -135,6 +156,29 @@ export class RecommendationService {
       recommendedProducts,
       nextCursor,
       hasMore: recommendedProducts.length === limit,
+    };
+  }
+  async recommendNewProducts(cursor?: string, limit = 10) {
+    const queryConditions: any = {};
+
+    if (cursor) {
+      queryConditions._id = { $gt: cursor };
+    }
+
+    // Giả sử bạn có trường createdAt để xác định khóa học mới
+    const newProducts = await this.productRepository
+      .find(queryConditions)
+      .sort({ createdAt: -1 }) // Sắp xếp theo thời gian tạo, khóa học mới nhất lên đầu
+      .limit(limit)
+      .exec();
+
+    const nextCursor =
+      newProducts.length > 0 ? newProducts[newProducts.length - 1]._id : null;
+
+    return {
+      newProducts,
+      nextCursor,
+      hasMore: newProducts.length === limit,
     };
   }
 }
