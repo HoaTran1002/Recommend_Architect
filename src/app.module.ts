@@ -8,8 +8,6 @@ import { CategoryModule } from './modules/category/category.module';
 import { RoleModule } from './modules/role/role.module';
 import { RoleService } from './modules/role/role.service';
 import { RecommendationModule } from './modules/recommendation/recommendation.module';
-import { UploadService } from './modules/upload/upload.service';
-import { UploadModule } from './modules/upload/upload.module';
 
 @Module({
   imports: [
@@ -21,9 +19,8 @@ import { UploadModule } from './modules/upload/upload.module';
     CategoryModule,
     RoleModule,
     RecommendationModule,
-    UploadModule,
   ],
-  providers: [UploadService],
+  providers: [],
 })
 export class AppModule implements OnModuleInit {
   constructor(private readonly roleService: RoleService) {}

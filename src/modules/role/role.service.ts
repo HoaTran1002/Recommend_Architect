@@ -35,7 +35,7 @@ export class RoleService {
     return await this.roleRepository.find();
   }
 
-  async findOne(id: string) {
+  async findOne(id: any) {
     const record = await this.roleRepository.findById(id);
     if (!record) {
       throw new NotFoundException(`Role with id ${id} not found`);
@@ -64,7 +64,7 @@ export class RoleService {
   }
 
   async findOrCreateDefaultRoles() {
-    const roles = ['user', 'admin', 'instructor'];
+    const roles = ['user', 'admin'];
 
     for (const roleName of roles) {
       const existingRole = await this.roleRepository.findOne({

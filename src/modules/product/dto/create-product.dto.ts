@@ -7,6 +7,7 @@ import {
   IsDate,
   IsArray,
 } from 'class-validator';
+import { Express } from 'express';
 
 export class CreateProductDto {
   @IsString()
@@ -24,15 +25,17 @@ export class CreateProductDto {
 
   @IsOptional()
   @IsDate()
-  @Type(() => Date)
+  @Type(() => Date) // Chuyển đổi chuỗi thành Date
   releaseDate?: Date;
 
   @IsOptional()
   @IsBoolean()
+  @Type(() => Boolean) // Chuyển đổi chuỗi thành boolean
   isActive?: boolean;
 
   @IsOptional()
   @IsArray()
+  @IsString({ each: true }) // Kiểm tra từng phần tử trong mảng là string
   tags?: string[];
 
   @IsOptional()
@@ -53,6 +56,7 @@ export class CreateProductDto {
 
   @IsOptional()
   @IsArray()
+  @IsString({ each: true }) // Kiểm tra từng phần tử trong mảng là string
   prerequisites?: string[];
 
   @IsOptional()
@@ -72,15 +76,19 @@ export class CreateProductDto {
   popularityScore?: number;
 
   @IsOptional()
-  @IsString()
-  videoPreviewUrl?: string;
+  pathImage?: Express.Multer.File; // Chấp nhận tệp hình ảnh
+
+  @IsOptional()
+  videoUrl?: Express.Multer.File; // Chấp nhận tệp video
 
   @IsOptional()
   @IsArray()
+  @IsString({ each: true }) // Kiểm tra từng phần tử trong mảng là string
   learningObjectives?: string[];
 
   @IsOptional()
   @IsBoolean()
+  @Type(() => Boolean) // Chuyển đổi chuỗi thành boolean
   certificate?: boolean;
 
   @IsOptional()
@@ -89,11 +97,12 @@ export class CreateProductDto {
 
   @IsOptional()
   @IsArray()
+  @IsString({ each: true }) // Kiểm tra từng phần tử trong mảng là string
   targetAudience?: string[];
 
   @IsOptional()
   @IsDate()
-  @Type(() => Date)
+  @Type(() => Date) // Chuyển đổi chuỗi thành Date
   lastUpdated?: Date;
 
   @IsOptional()

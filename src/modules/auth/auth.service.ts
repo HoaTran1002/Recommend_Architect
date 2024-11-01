@@ -16,11 +16,13 @@ import {
 } from 'src/utils/constants/env.constants';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { BlacklistTokenService } from 'src/modules/blacklist-token/blacklist-token.service';
+import { RoleService } from '../role/role.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
+    private readonly roleService: RoleService,
     private readonly jwtService: JwtService,
     private readonly blacklistTokenService: BlacklistTokenService,
   ) {}
@@ -37,9 +39,10 @@ export class AuthService {
     console.log(newUser.id);
     const accessToken = await this.generateAccessToken(jwtPayload);
     const refreshToken = await this.generateRefreshToken(jwtPayload);
-
+    const roleName = await this.roleService.findOne(jwtPayload.role);
+    const role = roleName.name;
     await this.userService.updateUserRefreshToken(newUser.id, refreshToken);
-    return { newUser, accessToken, refreshToken };
+    return { newUser, role, accessToken, refreshToken };
   }
 
   async signIn(signInDto: SignInDto) {
@@ -65,9 +68,12 @@ export class AuthService {
 
     const accessToken = await this.generateAccessToken(jwtPayload);
     const refreshToken = await this.generateRefreshToken(jwtPayload);
-
+    console.log(jwtPayload.role);
+    user.role = jwtPayload.role;
     await this.userService.updateUserRefreshToken(user.id, refreshToken);
-    return { user, accessToken, refreshToken };
+    const roleName = await this.roleService.findOne(jwtPayload.role);
+    const role = roleName.name;
+    return { user, role, accessToken, refreshToken };
   }
 
   async refreshToken(refreshTokenDto: RefreshTokenDto) {

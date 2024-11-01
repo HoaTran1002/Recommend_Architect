@@ -42,6 +42,7 @@ export class UserService {
     const hashedPassword = await bcrypt.hash(userDto.password, 10);
     const user = new this.userRepository({
       ...userDto,
+      role: existingRole._id,
       password: hashedPassword,
     });
     const record = await user.save();
