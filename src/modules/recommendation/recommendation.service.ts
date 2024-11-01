@@ -103,11 +103,33 @@ export class RecommendationService {
       queryConditions._id = { $gt: cursor };
     }
 
-    const products = await this.productRepository
+    // Tìm kiếm sản phẩm theo searchTerm
+    let products = await this.productRepository
       .find(queryConditions)
       .sort({ _id: 1 })
       .limit(limit)
       .exec();
+
+    // Nếu không tìm thấy sản phẩm nào, lấy một danh sách ngẫu nhiên không cần điều kiện
+    if (products.length === 0) {
+      products = await this.productRepository
+        .find({})
+        .sort({ _id: 1 })
+        .limit(limit)
+        .exec();
+    }
+    // Nếu số lượng tìm thấy ít hơn limit, thêm sản phẩm để đạt đủ limit
+    else if (products.length < limit) {
+      const additionalProducts = await this.productRepository
+        .find({
+          _id: { $nin: products.map((product) => product._id) }, // Loại bỏ các sản phẩm đã có
+        })
+        .sort({ _id: 1 })
+        .limit(limit - products.length)
+        .exec();
+
+      products = [...products, ...additionalProducts];
+    }
 
     const nextCursor =
       products.length > 0 ? products[products.length - 1]._id : null;

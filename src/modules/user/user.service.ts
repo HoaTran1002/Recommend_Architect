@@ -101,4 +101,12 @@ export class UserService {
     const response = await this.userRepository.find();
     return response;
   }
+  async findUserById(id: string): Promise<User> {
+    const objectId = new mongoose.Types.ObjectId(id); // Chuyển đổi ID thành ObjectId
+    const user = await this.userRepository.findById(objectId).exec(); // Sử dụng userRepository để tìm kiếm
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    return user;
+  }
 }
